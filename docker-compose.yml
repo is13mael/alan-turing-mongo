@@ -1,0 +1,12 @@
+services:
+  coffee-db:
+    image: mongo:8
+    container_name: coffee-db-container
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./coffe-db-data:/data/db
+
+networks:
+  default:
+    name: malaga-coffee-network
