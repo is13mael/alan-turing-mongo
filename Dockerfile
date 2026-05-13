@@ -1,6 +1,8 @@
 FROM node:24-alpine AS base
+RUN mkdir -p /usr/app
+WORKDIR /usr/app
 
-#Compilamos backend
+# Compilamos backend
 FROM base AS build-backend
 COPY ./backend/package*.json ./
 RUN npm ci
@@ -14,10 +16,10 @@ RUN npm ci
 COPY ./frontend/ ./
 RUN npm run build
 
-FROM base AS production
+FROM base AS release
 ENV STATIC_FILES_PATH=./public
-COPY --from=build-frontend /dist ${STATIC_FILES_PATH}
-COPY --from=build-backend /dist ./
+COPY --from=build-frontend /usr/app/dist ${STATIC_FILES_PATH}
+COPY --from=build-backend /usr/app/dist ./
 COPY ./backend/package*.json ./
 RUN npm ci --omit=dev
 
