@@ -2,14 +2,14 @@ FROM node:24-alpine AS base
 
 #Compilamos backend
 FROM base AS build-backend
-COPY ./backend/package.json ./
+COPY ./backend/package*.json ./
 RUN npm ci
 COPY ./backend/ ./
 RUN npm run build
 
 # Compilamos frontend
 FROM base AS build-frontend
-COPY ./frontend/package.json ./
+COPY ./frontend/package*.json ./
 RUN npm ci
 COPY ./frontend/ ./
 RUN npm run build
